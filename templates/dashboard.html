@@ -153,12 +153,11 @@
         <form action="{{ url_for('start_attack') }}" method="post">
             <div class="input-group">
                 <input type="text" placeholder="Enter Target" name="target_ip" required>
-                <input type="text" placeholder="Port" name="port_number" required>
+                <input type="text" placeholder="Port" name="port">
             </div>
             <select name="attack_type" required>
                 <option value="" disabled selected>Select Attack Type</option>
                 <option value="syn">SYN Flood</option>
-                <option value="http">HTTP Flood</option>
                 <option value="ipfrag">IP FRAG</option>
                 <option value="dns">DNS Flood</option>
             </select>

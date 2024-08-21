@@ -4,7 +4,6 @@ from flask import Flask, render_template, redirect, request, url_for, session
 app = Flask(__name__)
 app.secret_key = "reallysupersecret"
 
-
 def load_users():
     with open('users.json', 'r') as f:
         return json.load(f)
@@ -30,32 +29,31 @@ def dashboard():
         return redirect(url_for('login'))
     return render_template('dashboard.html',number=0)
 
-
 @app.route('/start_attack', methods=['POST'])
 def start_attack():
     global target_ip, attack_type, port
     target_ip = request.form.get('target_ip')
     attack_type = request.form.get('attack_type')
-    port = request.form.get('port')  # Port is optional
+    port_str = request.form.get('port')
 
-    # Check if port is provided and convert it to integer if present
-    if port:
-        port = int(port)
+    port = int(port_str) if port_str else None
+
+    if attack_type == 'syn' and port is None:
+        return render_template('dashboard.html',error="Port must be provided for SYN flood attacks.")
 
     return redirect(url_for('attack'))
 
 @app.route('/attack', methods=['GET'])
 def attack():
-    if attack_type in ['syn', 'http']:
-        if port:
-            command = f"python3 core.py --ip {target_ip} --port {port} --threads 5 --attack {attack_type}"
-        else:
-            command = f"python3 core.py --ip {target_ip} --threads 5 --attack {attack_type}"
+    if attack_type == 'syn':
+        if port is None:
+            return "Port is required for SYN flood attacks.", 400
+        command = f"python3 core.py --ip {target_ip} --port {port} --threads 10 --attack {attack_type}"
     else:
-        command = f"python3 core.py --ip {target_ip} --threads 5 --attack {attack_type}"
-
+        command = f"python3 core.py --ip {target_ip} --threads 10 --attack {attack_type}"
+    
     return render_template('attack.html', command=command)
 
 
-if __name__ == '__main__':  # Corrected the typo here
+if __name__ == '__main__': 
     app.run(debug=True)
