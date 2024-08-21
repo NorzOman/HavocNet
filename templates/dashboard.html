@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #202225;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .top-bar {
+            background-color: #2f3136;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            border-bottom: 2px solid #7289da;
+        }
+        .top-bar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        }
+        .zombie-bar {
+            background-color: #36393f;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            border-bottom: 2px solid #7289da;
+        }
+        .zombie-bar h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .zombie-bar button {
+            background-color: #7289da;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .zombie-bar button:hover {
+            background-color: #677bc4;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            flex: 1;
+        }
+        .dashboard-container form {
+            background-color: #36393f;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dashboard-container .input-group {
+            display: flex;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .dashboard-container input[type="text"] {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2f3136;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+        }
+        .dashboard-container input[type="text"]:first-of-type {
+            flex: 2; /* Larger portion for the target input */
+        }
+        .dashboard-container input[type="text"]:nth-of-type(2) {
+            flex: 1; /* Smaller portion for the port input */
+            width: 100px; /* Fixed width for the port input */
+            margin-left: 10px; /* Space between target and port inputs */
+        }
+        .dashboard-container select,
+        .dashboard-container button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2f3136;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            margin: 10px 0;
+        }
+        .dashboard-container select {
+            background-color: #2f3136;
+        }
+        .dashboard-container input[type="text"]::placeholder,
+        .dashboard-container select {
+            color: #ffffff;
+        }
+        .dashboard-container input[type="text"]:focus,
+        .dashboard-container select:focus {
+            background-color: #40444b;
+        }
+        .dashboard-container button {
+            background-color: #7289da;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .dashboard-container button:hover {
+            background-color: #677bc4;
+        }
+        .dashboard-container .error-message {
+            color: #fa8072;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h1>HavocNet</h1>
+    </div>
+    <div class="zombie-bar">
+        <h2>Zombie Count: {{number}}</h2>
+        <button onclick="checkStatus()">Check Status</button>
+    </div>
+    <div class="dashboard-container">
+        <form action="{{ url_for('start_attack') }}" method="post">
+            <div class="input-group">
+                <input type="text" placeholder="Enter Target" name="target_ip" required>
+                <input type="text" placeholder="Port" name="port_number" required>
+            </div>
+            <select name="attack_type" required>
+                <option value="" disabled selected>Select Attack Type</option>
+                <option value="syn">SYN Flood</option>
+                <option value="http">HTTP Flood</option>
+                <option value="ipfrag">IP FRAG</option>
+                <option value="dns">DNS Flood</option>
+            </select>
+            <button type="submit">Start Attack</button>
+            <p class="error-message" id="error-message">{{ error }}</p>
+        </form>
+    </div>
+    <script>
+        function checkStatus() {
+            console.log("Check Status button clicked");
+        }
+    </script>
+</body>
+</html>
