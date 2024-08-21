@@ -28,7 +28,7 @@ This botnet tool is currently in development and provides a comprehensive dashbo
 
   ![Attack Management](https://github.com/user-attachments/assets/df338833-2020-46ba-ae77-0892de52044f)
   
-  *Screenshot of the Attack Management Interface*
+  *Screenshot of the Attack Management Interface*.
 
 ## Important Notice
 
